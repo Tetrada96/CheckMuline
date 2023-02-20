@@ -1,11 +1,16 @@
-import './App.css';
 import React from 'react';
-import { Table } from './fragments/table';
+import { Table } from './fragments/Table';
+import { Provider } from 'react-redux';
+import { store } from './store/store';
+import { Search } from './fragments/Search';
 
 function App() {
   return (
     <div className="App">
-      <Table />
+      <Provider store={store}>
+        <Search />
+        <Table />
+      </Provider>
     </div>
   );
 }
