@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+import { IColor } from '../store/object';
 
-export const Search = () => {
+export const Search = ({ colors }: { colors: IColor[] }) => {
   const [state, setState] = useState<string | undefined>(undefined);
   const [result, setResult] = useState<{ id: string; DMC: string; text: string }[]>();
-
-  const colors = useSelector((state: RootState) => state.colors);
 
   const onCheckHandler = () => {
     const arrayValue = state === '' ? undefined : new Set(state?.split(' '));

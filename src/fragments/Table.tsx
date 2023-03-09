@@ -1,20 +1,23 @@
-import React, { ChangeEvent, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addInfo, changeCount } from '../store/colorCountReducer';
+import React, { ChangeEvent } from 'react';
 
+import { changeColorCount, getColors } from '../services/colors';
 import { IColor } from '../store/object';
-import { RootState } from '../store/store';
 
-export const Table = () => {
-  const colors = useSelector((state: RootState) => state.colors);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(addInfo());
-  }, []);
-
+export const Table = ({
+  colors,
+  setColors,
+}: {
+  colors: IColor[];
+  setColors: React.Dispatch<React.SetStateAction<IColor[] | undefined>>;
+}) => {
   const onChangeCount = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-    dispatch(changeCount({ value: e.target.value, id }));
+    changeColorCount(id, Number(e.target.value)).then(() =>
+      getColors().then((data) => {
+        setColors(data.data);
+      })
+    );
   };
+
   return (
     <table style={{ borderCollapse: 'collapse' }}>
       <thead>
@@ -38,7 +41,7 @@ export const Table = () => {
                 <input
                   type="number"
                   value={item.count}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeCount(e, item.id)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => onChangeCount(e, item.DMC)}
                 />
               </td>
             </tr>
