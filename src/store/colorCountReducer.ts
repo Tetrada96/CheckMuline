@@ -1,17 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { objectColor } from './object';
+import { IColor, objectColor } from './object';
 
 export const counterSlice = createSlice({
   name: 'counter',
-  initialState: [{ id: '1', color: '', nameColorEnd: '', DMC: '', nameColorRu: '', count: 0 }],
+  initialState: [{ id: '1', color: '', name_color_eng: '', dmc: '', name_color_ru: '', count: 0 }],
   reducers: {
     addInfo: () => {
       return objectColor;
     },
-    changeCount: (state, action) => {
+    changeCount: (state: IColor[], action: { payload: { id: string; value: number } }) => {
       const newState = state.map((item) =>
-        item.id === action.payload.id ? (item.count = action.payload.value) : item
+        item.id === action.payload.id ? { ...item, count: action.payload.value } : item
       );
       state = newState;
     },

@@ -1,0 +1,11 @@
+.button {
+	padding: 5px;
+	&:hover {
+		background-color: aqua;
+	}
+	&:disabled {
+		cursor: default;
+		background-color: lightgray;
+	}
+
+}

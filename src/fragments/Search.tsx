@@ -1,38 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Button } from '../components/Button/Button';
+
+import { Input } from '../components/Input/Input';
+import { checkColors, getColors } from '../services/colors';
 import { IColor } from '../store/object';
 
-export const Search = ({ colors }: { colors: IColor[] }) => {
-  const [state, setState] = useState<string | undefined>(undefined);
-  const [result, setResult] = useState<{ id: string; DMC: string; text: string }[]>();
+export const Search = ({
+  setColors,
+  searchState,
+  setSearchState,
+}: {
+  setColors: React.Dispatch<React.SetStateAction<IColor[] | undefined>>;
+  setSearchState: React.Dispatch<React.SetStateAction<string>>;
+  searchState: string;
+}) => {
+  const onGetColorsHandler = () => {
+    getColors().then((data) => {
+      setColors(data.data);
+      setSearchState('');
+    });
+  };
 
   const onCheckHandler = () => {
-    const arrayValue = state === '' ? undefined : new Set(state?.split(' '));
-    console.log(arrayValue);
-    const thisResult = [];
-    if (!arrayValue) {
-      setResult([]);
+    if (!searchState) {
+      onGetColorsHandler();
       return;
     }
-    for (const value of arrayValue) {
-      const thisColor = colors.find((item) => item.DMC === value);
-      if (!thisColor) {
-        thisResult.push({ id: crypto.randomUUID(), DMC: value, text: 'Такого цвета нет в таблице' });
-      } else {
-        thisResult.push({ id: thisColor.id, DMC: value, text: `В наличии ${thisColor.count}` });
-      }
-    }
-    setResult(thisResult);
+    checkColors(searchState.trim()?.split(' ')).then((data) => {
+      setColors(data.data);
+    });
   };
 
   return (
-    <div>
+    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
       Введите номера цветов через пробел
-      <input onChange={(e) => setState(e.target.value)} />
-      {result &&
-        result.map((item) => {
-          return <div key={item.id}>{`${item.DMC} - ${item.text}`}</div>;
-        })}
-      <button onClick={onCheckHandler}>Проверить</button>
+      <Input value={searchState} onChange={(e) => setSearchState(e.target.value)} />
+      <Button text="Проверить" disabled={!searchState} onClick={onCheckHandler} />
+      <Button text="Сбросить фильтр" disabled={false} onClick={onGetColorsHandler} />
     </div>
   );
 };

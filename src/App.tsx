@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from './fragments/Table';
-import { Provider } from 'react-redux';
-import { store } from './store/store';
 import { Search } from './fragments/Search';
 import { getColors } from './services/colors';
 import { IColor } from './store/object';
 
 function App() {
   const [colors, setColors] = useState<IColor[] | undefined>(undefined);
+  const [searchState, setSearchState] = useState<string>('');
 
   useEffect(() => {
     getColors().then((data) => {
@@ -19,10 +18,8 @@ function App() {
 
   return (
     <div className="App">
-      <Provider store={store}>
-        <Search colors={colors} />
-        <Table colors={colors} setColors={setColors} />
-      </Provider>
+      <Search searchState={searchState} setSearchState={setSearchState} setColors={setColors} />
+      <Table searchState={searchState} colors={colors} setColors={setColors} />
     </div>
   );
 }
