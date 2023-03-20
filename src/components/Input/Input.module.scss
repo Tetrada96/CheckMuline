@@ -1,10 +1,13 @@
+@import "../../colors";
+
 .input {
 	height: 25px;
 	border-radius: 8px;
 	border: 1px solid gray;
 	padding: 0 10px;
+	width: 150px;
 	&:focus-visible {
-		border: 1px solid blue;
-		outline: 1px solid blue;
+		border: 1px solid $secondary;
+		outline: 1px solid $secondary;
 	}
 }

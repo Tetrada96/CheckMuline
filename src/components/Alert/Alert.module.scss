@@ -1,0 +1,13 @@
+.alert {
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	border: 2px solid red;
+	padding: 10px;
+	display: none;
+	border-radius: 8px;
+}
+
+.errorAlert {
+	display: block;
+}

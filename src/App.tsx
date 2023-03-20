@@ -1,27 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from './fragments/Table';
-import { Search } from './fragments/Search';
-import { getColors } from './services/colors';
-import { IColor } from './store/object';
+import React, { useContext, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
+import { LoginPage } from './pages/LoginPage';
+import { PageColors } from './pages/PageColors';
+import { Context } from '.';
+import { Header } from './fragments/Header/Header';
+import { Alert } from './components/Alert/Alert';
+import './index.scss';
 
 function App() {
-  const [colors, setColors] = useState<IColor[] | undefined>(undefined);
-  const [searchState, setSearchState] = useState<string>('');
+  const navigate = useNavigate();
+
+  const { store } = useContext(Context);
 
   useEffect(() => {
-    getColors().then((data) => {
-      setColors(data.data);
-    });
-  }, []);
+    if (store.user.id) {
+      navigate('/colors');
+      return;
+    }
+    if (localStorage.getItem('token')) {
+      store.checkAuth();
+      return;
+    }
 
-  if (!colors) return null;
+    navigate('/');
+  }, [store.user.id]);
 
   return (
     <div className="App">
-      <Search searchState={searchState} setSearchState={setSearchState} setColors={setColors} />
-      <Table searchState={searchState} colors={colors} setColors={setColors} />
+      <Header />
+      <Alert />
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/colors/" element={<PageColors />} />
+      </Routes>
     </div>
   );
 }
 
-export default App;
+export default observer(App);

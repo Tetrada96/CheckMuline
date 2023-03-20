@@ -3,61 +3,75 @@ import React, { ChangeEvent } from 'react';
 import { Input } from '../components/Input/Input';
 import { Tr } from '../components/Tr/Tr';
 import { Td } from '../components/Td/Td';
-import { changeColorCount, checkColors, getColors } from '../services/colors';
+import { changeColorCount, getColors } from '../services/colors';
 import { IColor } from '../store/object';
+import styles from './styles.module.scss';
 
 export const Table = ({
-  colors,
+  showenColors,
+  userId,
   searchState,
-  setColors,
+  checked,
+  setShowenColors,
+  onCheckColors,
 }: {
-  colors: IColor[];
+  showenColors: IColor[];
+  userId: string;
   searchState: string;
-  setColors: React.Dispatch<React.SetStateAction<IColor[] | undefined>>;
+  checked?: boolean;
+  setShowenColors: React.Dispatch<React.SetStateAction<IColor[] | undefined>>;
+  onCheckColors: () => void;
 }) => {
   const onChangeCount = (e: ChangeEvent<HTMLInputElement>, id: string) => {
-    changeColorCount(id, Number(e.target.value)).then(() => {
+    changeColorCount(userId, id, Number(e.target.value)).then(() => {
       if (!searchState) {
-        getColors().then((data) => {
-          setColors(data.data);
+        getColors(userId).then((data) => {
+          setShowenColors(data.data.filter((item) => (checked ? item.need_buy !== false : true)));
         });
       } else {
-        checkColors(searchState.trim()?.split(' ')).then((data) => {
-          setColors(data.data);
-        });
+        onCheckColors();
       }
     });
   };
 
-  const errorColor = colors.filter((item: IColor) => item.error);
-  const successColor = colors.filter((item: IColor) => !item.error);
+  const errorColor = showenColors.filter((item: IColor) => item.error);
+  const successColor = showenColors.filter((item: IColor) => !item.error);
 
   return (
-    <div>
+    <div className={styles.tableWrapper}>
       {errorColor.length !== 0
         ? errorColor.map((item) => <div key={item.dmc}>{`${item.dmc} такого цвета нет в таблице`}</div>)
         : null}
       {successColor.length !== 0 ? (
-        <table style={{ borderCollapse: 'collapse' }}>
-          <thead>
-            <Tr>
+        <table className={styles.table}>
+          <thead style={{ position: 'sticky', top: '-2px' }}>
+            <Tr isHead>
               <Td>dmc</Td>
               <Td>Цвет</Td>
-              <Td>Color</Td>
-              <Td>Наименование</Td>
+              <Td className={styles.TdHide}>Color</Td>
+              <Td className={styles.TdHide}>Наименование</Td>
               <Td>Количество</Td>
             </Tr>
           </thead>
           <tbody>
             {successColor.map((item: IColor) => {
               return (
-                <Tr key={item.id}>
-                  <Td>{item.dmc}</Td>
-                  <Td style={{ backgroundColor: item.color }}></Td>
-                  <Td>{item.name_color_eng}</Td>
-                  <Td>{item.name_color_ru}</Td>
-                  <Td>
-                    <Input type="number" value={item.count} onChange={(e) => onChangeCount(e, item.dmc)} />
+                <Tr needBye={item.need_buy} key={item.id}>
+                  <Td className={styles.Td}>{item.dmc}</Td>
+                  <Td className={styles.Td} style={{ backgroundColor: item.color }}></Td>
+                  <Td className={styles.TdHide} style={{ width: '250px' }}>
+                    {item.name_color_eng}
+                  </Td>
+                  <Td className={styles.TdHide} style={{ width: '400px' }}>
+                    {item.name_color_ru}
+                  </Td>
+                  <Td className={styles.Td}>
+                    <Input
+                      className={styles.tableInput}
+                      type="number"
+                      value={item.count}
+                      onChange={(e) => onChangeCount(e, item.dmc)}
+                    />
                   </Td>
                 </Tr>
               );

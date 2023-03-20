@@ -1,42 +1,46 @@
 import React from 'react';
-import { Button } from '../components/Button/Button';
 
+import { Button } from '../components/Button/Button';
+import { FlexBlock } from '../components/FlexBlock/FlexBlock';
 import { Input } from '../components/Input/Input';
-import { checkColors, getColors } from '../services/colors';
-import { IColor } from '../store/object';
+import styles from './styles.module.scss';
 
 export const Search = ({
-  setColors,
   searchState,
+  checked,
+  onCheckColors,
   setSearchState,
+  showAllColors,
 }: {
-  setColors: React.Dispatch<React.SetStateAction<IColor[] | undefined>>;
   setSearchState: React.Dispatch<React.SetStateAction<string>>;
   searchState: string;
+  checked: boolean;
+  onCheckColors: () => void;
+  showAllColors: () => void;
 }) => {
   const onGetColorsHandler = () => {
-    getColors().then((data) => {
-      setColors(data.data);
-      setSearchState('');
-    });
+    showAllColors();
+    setSearchState('');
   };
 
   const onCheckHandler = () => {
-    if (!searchState) {
-      onGetColorsHandler();
-      return;
-    }
-    checkColors(searchState.trim()?.split(' ')).then((data) => {
-      setColors(data.data);
-    });
+    // if (!searchState) {
+    //   onGetColorsHandler();
+    //   return;
+    // }
+    onCheckColors();
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-      Введите номера цветов через пробел
+    <FlexBlock className={styles.searchWrapper}>
+      <div>Введите номера цветов через пробел</div>
       <Input value={searchState} onChange={(e) => setSearchState(e.target.value)} />
-      <Button text="Проверить" disabled={!searchState} onClick={onCheckHandler} />
-      <Button text="Сбросить фильтр" disabled={false} onClick={onGetColorsHandler} />
-    </div>
+      <Button disabled={checked} onClick={onCheckHandler}>
+        Проверить
+      </Button>
+      <Button disabled={false} onClick={onGetColorsHandler}>
+        Сбросить фильтр
+      </Button>
+    </FlexBlock>
   );
 };

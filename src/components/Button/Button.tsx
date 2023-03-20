@@ -1,17 +1,19 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import styles from './Button.module.scss';
 
 interface IButtonProps {
-  text: string;
+  children: string | JSX.Element;
   disabled?: boolean;
+  className?: string;
   onClick: () => void;
 }
 
-export const Button = ({ text, disabled, onClick }: IButtonProps) => {
+export const Button = ({ children, disabled, className, onClick }: IButtonProps) => {
   return (
-    <button className={styles.button} disabled={disabled} onClick={onClick}>
-      {text}
+    <button className={classNames(styles.button, className)} disabled={disabled} onClick={onClick}>
+      {children}
     </button>
   );
 };

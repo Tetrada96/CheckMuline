@@ -1,3 +1,6 @@
+@import "colors";
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600&display=swap');
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -9,15 +12,22 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-
   
+}
+
+* {
+  box-sizing: border-box;
+  color: $accent;
+  font-family: 'Bona Nova', italic ;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 body {
   margin: 0;
   display: flex;
   min-width: 320px;
-  min-height: calc(100vh);
+  overflow-y: hidden;
 }
 
 h1 {
@@ -48,10 +58,9 @@ tr {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  background-color: lightseagreen;
+  background-color: $primary;
   gap: 20px;
-  width: calc(100vw - 35px);
-  height: calc(100% - 20px);
-  padding: 10px
+  width: 100vw;
+  height: 100vh;
 }
 

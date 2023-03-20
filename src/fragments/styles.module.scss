@@ -1,0 +1,59 @@
+@import "../colors";
+
+.tableWrapper {
+	overflow-y: auto;
+	height: calc(100vh - 171px);
+	border-radius: 8px;
+	&::-webkit-scrollbar {
+		width: 10px;
+	}
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		background-color: $secondary;
+	}
+		&::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.2);
+				border-radius: 10px;
+				background-color: #f9f9fd;
+		}
+}
+
+.table {
+	border-collapse: collapse
+}
+
+.searchWrapper {
+	align-items: center;
+	gap: 20px
+}
+
+.needByeBlock {
+	align-items: center;
+	gap: 20px
+}
+
+@media screen and (max-width: 650px) {
+	.searchWrapper {
+		flex-direction: column;
+	}
+	.TdHide {
+		display: none;
+	}
+	// .tableInput {
+	// 	width: 100px;
+	// }
+	.Td {
+		width: auto;
+	}
+	.table {
+		width: -webkit-fill-available;
+	}
+	.tableWrapper {
+		width: 100%;
+		border-radius: 0;
+	}
+	.needByeBlock {
+		flex-direction: column;
+
+	}
+}
