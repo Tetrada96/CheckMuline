@@ -2,7 +2,6 @@
 
 .tableWrapper {
 	overflow-y: auto;
-	height: calc(100vh - 171px);
 	border-radius: 8px;
 	&::-webkit-scrollbar {
 		width: 10px;
@@ -24,13 +23,17 @@
 
 .searchWrapper {
 	align-items: center;
-	gap: 20px
+	gap: 20px;
+	height: auto;
+	flex-shrink: 0;
+	
 }
 
 .needByeBlock {
 	align-items: center;
-	gap: 20px
+	gap: 20px;
 }
+
 
 @media screen and (max-width: 650px) {
 	.searchWrapper {
@@ -39,9 +42,7 @@
 	.TdHide {
 		display: none;
 	}
-	// .tableInput {
-	// 	width: 100px;
-	// }
+
 	.Td {
 		width: auto;
 	}

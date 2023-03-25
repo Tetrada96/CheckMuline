@@ -3,28 +3,18 @@ import { observer } from 'mobx-react-lite';
 
 import { IColor } from '../store/object';
 import { Table } from '../fragments/Table';
-import { Search } from '../fragments/Search';
-import { NeedBuyBlock } from '../fragments/NeedBuyBlock';
-import { getColors, checkColors } from '../services/colors';
+import { getColors } from '../services/colors';
 import { Context } from '..';
+import { FlexBlock } from '../components/FlexBlock/FlexBlock';
 
 export const PageColors = observer(() => {
   const [colors, setColors] = useState<IColor[] | undefined>(undefined);
-  const [searchState, setSearchState] = useState<string>('');
   const { store } = useContext(Context);
-  const [checked, setChecked] = useState(false);
 
   const showAllColors = () => {
     getColors(store.user.id).then((data) => {
       setColors(data.data);
     });
-  };
-
-  const onGetColorsHandler = () => {
-    showAllColors();
-    if (checked) {
-      onChangeCheckbox();
-    }
   };
 
   useEffect(() => {
@@ -38,52 +28,22 @@ export const PageColors = observer(() => {
     return null;
   }
 
-  const getData = () => {
-    return getColors(store.user.id).then((data) => data.data);
-  };
-
-  const onChangeCheckbox = () => {
-    setChecked(!checked);
-    if (!checked) {
-      getData().then((items) => setColors(items.filter((item) => item.need_buy !== false)));
-    } else {
-      if (!searchState) {
-        getData().then((items) => setColors(items));
-      } else {
-        onCheckColors();
-      }
-    }
-  };
-
-  const onCheckColors = () => {
-    checkColors(store.user.id, searchState ? searchState.trim()?.split(' ') : []).then((data) => {
-      setColors(data.data.filter((item) => (checked ? item.need_buy !== false : true)));
-    });
-  };
-
   return (
-    <>
-      <Search
-        searchState={searchState}
-        checked={checked}
-        setSearchState={setSearchState}
-        onCheckColors={onCheckColors}
-        showAllColors={onGetColorsHandler}
-      />
-      <NeedBuyBlock
-        checked={checked}
-        onChangeCheckbox={onChangeCheckbox}
-        showAllColors={showAllColors}
-        userId={store.user.id}
-      />
-      <Table
-        userId={store.user.id}
-        searchState={searchState}
-        showenColors={colors}
-        onCheckColors={onCheckColors}
-        setShowenColors={setColors}
-        checked={checked}
-      />
-    </>
+    <FlexBlock
+      style={{
+        flexDirection: 'column',
+        width: '100%',
+        height: '100%',
+        alignItems: 'center',
+        gap: '20px',
+        paddingTop: '20px',
+      }}
+    >
+      <div style={{ padding: '0 50px', textAlign: 'center' }}>
+        На этой странице вы можете заполнить свою таблицу цветами DMC. Обратите внимание, что отметка &laquo;Выбранные
+        как Необходимо купить&raquo; при изменении количества, будет снята для соответствующего цвета{' '}
+      </div>
+      <Table userId={store.user.id} showenColors={colors} setShowenColors={setColors} />
+    </FlexBlock>
   );
 });

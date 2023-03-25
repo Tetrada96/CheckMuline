@@ -9,8 +9,8 @@ import { API_URL, ErrorData } from '../services';
 export default class Store {
   user = {} as IUser;
   isAuth = false;
-  error = false;
-  message: string | undefined = '';
+  alert: { error: boolean; message: string | undefined }[] = [];
+  isOpenMenu = false;
   constructor() {
     makeAutoObservable(this);
   }
@@ -23,6 +23,10 @@ export default class Store {
     this.user = user;
   }
 
+  setIsOpenMenu() {
+    this.isOpenMenu = !this.isOpenMenu;
+  }
+
   async login(email: string, password: string) {
     try {
       const response = await UserService.login(email, password);
@@ -32,9 +36,7 @@ export default class Store {
       this.setUser(response.data.user);
     } catch (e) {
       if (isAxiosError<AxiosError<ErrorData>>(e)) {
-        this.setError(true);
-        this.setMessage(e.response?.data.message);
-
+        this.setAlert(true, e.response?.data.message);
         console.log(e.response?.data);
       }
     }
@@ -49,8 +51,7 @@ export default class Store {
       this.setUser(response.data.user);
     } catch (e) {
       if (isAxiosError<AxiosError<ErrorData>>(e)) {
-        this.setError(true);
-        this.setMessage(e.response?.data.message);
+        this.setAlert(true, e.response?.data.message);
 
         console.log(e.response?.data);
       }
@@ -81,24 +82,14 @@ export default class Store {
       this.setUser(response.data.user);
     } catch (e) {
       if (isAxiosError<AxiosError<ErrorData>>(e)) {
-        this.setError(true);
-        this.setMessage(e.response?.data.message);
-
+        this.setAlert(true, e.response?.data.message);
         console.log(e.response?.data);
       }
     }
   }
 
-  setError(bool: boolean) {
-    this.error = bool;
-  }
-
-  setMessage(mes: string | undefined) {
-    this.message = mes;
-  }
-
-  setAlert(isError: boolean, message: string) {
-    this.setError(isError);
-    this.setMessage(message);
+  setAlert(isError: boolean, message: string | undefined) {
+    this.alert.push({ error: isError, message });
+    setTimeout(() => this.alert.shift(), 3000);
   }
 }

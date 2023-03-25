@@ -8,12 +8,10 @@ import styles from './styles.module.scss';
 
 interface INeedBuyBlockProps {
   userId: string;
-  checked: boolean;
-  onChangeCheckbox: () => void;
   showAllColors: () => void;
 }
 
-export const NeedBuyBlock = ({ userId, checked, onChangeCheckbox, showAllColors }: INeedBuyBlockProps) => {
+export const NeedBuyBlock = ({ userId, showAllColors }: INeedBuyBlockProps) => {
   const [needByeState, setNeedBuyState] = useState<string>('');
 
   const onPostNeedBuyColors = () => {
@@ -25,16 +23,6 @@ export const NeedBuyBlock = ({ userId, checked, onChangeCheckbox, showAllColors 
 
   return (
     <FlexBlock className={styles.needByeBlock}>
-      <FlexBlock>
-        <input
-          type="checkbox"
-          id="showNeedBuyColors"
-          name="showNeedBuyColors"
-          checked={checked}
-          onChange={onChangeCheckbox}
-        />
-        <label htmlFor="showNeedBuyColors">Показать цвета, которые необходимо купить</label>
-      </FlexBlock>
       <Input value={needByeState} onChange={(e) => setNeedBuyState(e.target.value)} />
       <Button disabled={!needByeState} onClick={onPostNeedBuyColors}>
         Отметить как необходимые купить

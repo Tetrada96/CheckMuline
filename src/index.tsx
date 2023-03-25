@@ -14,11 +14,11 @@ const store = new Store();
 export const Context = createContext<IStore>({ store });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <>
     <BrowserRouter>
       <Context.Provider value={{ store }}>
         <App />
       </Context.Provider>
     </BrowserRouter>
-  </React.StrictMode>
+  </>
 );

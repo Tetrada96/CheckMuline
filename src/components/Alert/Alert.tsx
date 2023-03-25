@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 
@@ -8,11 +8,13 @@ import styles from './Alert.module.scss';
 export const Alert = observer(() => {
   const { store } = useContext(Context);
 
-  useEffect(() => {
-    setTimeout(() => {
-      store.setAlert(false, '');
-    }, 2000);
-  }, [store.error]);
-
-  return <div className={classNames(styles.alert, { [styles.errorAlert]: store.error })}>{store.message}</div>;
+  return (
+    <div className={styles.alertWrapper}>
+      {store.alert.map((item, index) => (
+        <div className={classNames(styles.alert, { [styles.errorAlert]: store.alert })} key={index}>
+          {item.message}
+        </div>
+      ))}
+    </div>
+  );
 });

@@ -1,0 +1,31 @@
+@import "../../colors";
+
+.menuWrapper {
+	width: auto;
+	border-right: 2px solid $secondary;
+	height: 100%;
+}
+
+.blockIcons {
+	height: auto;
+	flex-direction: column;
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+
+.link {
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	padding: 5px;
+}
+
+.openMenu {
+	padding-right: 15px;
+}
+
+.chooseLink {
+	background-color: $secondary;
+}
+
+

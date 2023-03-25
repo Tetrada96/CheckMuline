@@ -4,10 +4,14 @@ import { observer } from 'mobx-react-lite';
 
 import { LoginPage } from './pages/LoginPage';
 import { PageColors } from './pages/PageColors';
+import { PageCheckColors } from './pages/PageCheckColors';
+import { PageNeedBuyColors } from './pages/PageNeedBuyColors';
 import { Context } from '.';
 import { Header } from './fragments/Header/Header';
 import { Alert } from './components/Alert/Alert';
 import './index.scss';
+import { Menu } from './fragments/Menu/Menu';
+import { FlexBlock } from './components/FlexBlock/FlexBlock';
 
 function App() {
   const navigate = useNavigate();
@@ -29,12 +33,17 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
+      <Header hideMenu={!store.user.id} />
       <Alert />
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/colors/" element={<PageColors />} />
-      </Routes>
+      <FlexBlock className="WrapperContent">
+        <Menu hide={!store.user.id} />
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/check" element={<PageCheckColors />} />
+          <Route path="/colors/" element={<PageColors />} />
+          <Route path="/need-buy/" element={<PageNeedBuyColors />} />
+        </Routes>
+      </FlexBlock>
     </div>
   );
 }
