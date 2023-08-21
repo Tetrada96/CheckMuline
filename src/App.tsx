@@ -19,15 +19,10 @@ function App() {
   const { store } = useContext(Context);
 
   useEffect(() => {
-    if (store.user.id) {
-      navigate('/colors');
-      return;
-    }
     if (localStorage.getItem('token')) {
       store.checkAuth();
       return;
     }
-
     navigate('/');
   }, [store.user.id]);
 
@@ -39,6 +34,14 @@ function App() {
         <Menu hide={!store.user.id} />
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route
+            path="/registration/"
+            element={
+              <div>
+                Вам на почту было отправлено письмо о регистрации, после клика на ссылку, вам откроется приложение
+              </div>
+            }
+          />
           <Route path="/check" element={<PageCheckColors />} />
           <Route path="/colors/" element={<PageColors />} />
           <Route path="/need-buy/" element={<PageNeedBuyColors />} />

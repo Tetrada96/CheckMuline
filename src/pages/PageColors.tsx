@@ -24,6 +24,10 @@ export const PageColors = observer(() => {
     showAllColors();
   }, [store.user.id]);
 
+  if (!store.user.id) {
+    return null;
+  }
+
   if (!colors) {
     return null;
   }

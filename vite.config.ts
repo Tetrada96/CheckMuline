@@ -13,5 +13,11 @@ export default defineConfig({
         secure: false,
       },
     },
+    watch: {
+      usePolling: true,
+    },
+    host: true,
+    strictPort: true,
+    port: 4173,
   },
 });

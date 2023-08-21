@@ -55,7 +55,7 @@ export const Table = ({
           : null}
         {successColor.length !== 0 ? (
           <table className={styles.table}>
-            <thead style={{ position: 'sticky', top: '-2px' }}>
+            <thead className={styles.thead}>
               <Tr isHead>
                 <Td>dmc</Td>
                 <Td>Цвет</Td>

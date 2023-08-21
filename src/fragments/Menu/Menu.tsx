@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import TableViewIcon from '@mui/icons-material/TableView';
 import { useLocation, Link } from 'react-router-dom';
 import DomainVerificationIcon from '@mui/icons-material/DomainVerification';
-import InventoryIcon from '@mui/icons-material/Inventory';
+import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
 
 import styles from './Menu.module.scss';
 import { IconButton } from '../../components/IconButton/IconButton';
@@ -54,7 +54,7 @@ export const Menu = observer(({ hide = false }: { hide?: boolean }) => {
           to="/need-buy"
         >
           <IconButton>
-            <InventoryIcon />
+            <LocalGroceryStoreIcon />
           </IconButton>
           {store.isOpenMenu && <div style={{ width: 'max-content' }}>Необходимо купить</div>}
         </Link>

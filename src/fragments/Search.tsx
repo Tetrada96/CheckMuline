@@ -18,9 +18,15 @@ export const Search = ({
     onCheckColors();
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onCheckColors();
+    }
+  };
+
   return (
     <FlexBlock className={styles.searchWrapper}>
-      <Input value={searchState} onChange={(e) => setSearchState(e.target.value)} />
+      <Input value={searchState} onKeyDown={onKeyDown} onChange={(e) => setSearchState(e.target.value)} />
       <Button disabled={!searchState} onClick={onCheckHandler}>
         Проверить
       </Button>

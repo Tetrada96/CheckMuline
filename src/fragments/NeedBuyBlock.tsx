@@ -21,9 +21,15 @@ export const NeedBuyBlock = ({ userId, showAllColors }: INeedBuyBlockProps) => {
     });
   };
 
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onPostNeedBuyColors();
+    }
+  };
+
   return (
     <FlexBlock className={styles.needByeBlock}>
-      <Input value={needByeState} onChange={(e) => setNeedBuyState(e.target.value)} />
+      <Input value={needByeState} onKeyDown={onKeyDown} onChange={(e) => setNeedBuyState(e.target.value)} />
       <Button disabled={!needByeState} onClick={onPostNeedBuyColors}>
         Отметить как необходимые купить
       </Button>

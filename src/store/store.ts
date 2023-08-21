@@ -11,6 +11,7 @@ export default class Store {
   isAuth = false;
   alert: { error: boolean; message: string | undefined }[] = [];
   isOpenMenu = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -34,10 +35,12 @@ export default class Store {
       localStorage.setItem('token', response.data.accessToken);
       this.setAuth(true);
       this.setUser(response.data.user);
+      return true;
     } catch (e) {
       if (isAxiosError<AxiosError<ErrorData>>(e)) {
         this.setAlert(true, e.response?.data.message);
         console.log(e.response?.data);
+        return false;
       }
     }
   }
@@ -47,13 +50,13 @@ export default class Store {
       const response = await UserService.registration(email, password);
       console.log(response);
       localStorage.setItem('token', response.data.accessToken);
-      this.setAuth(true);
-      this.setUser(response.data.user);
+      return true;
     } catch (e) {
       if (isAxiosError<AxiosError<ErrorData>>(e)) {
         this.setAlert(true, e.response?.data.message);
 
         console.log(e.response?.data);
+        return false;
       }
     }
   }
